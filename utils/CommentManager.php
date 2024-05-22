@@ -39,15 +39,19 @@ class CommentManager
 	public function addCommentForNews($body, $newsId)
 	{
 		$db = DB::getInstance();
-		$sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES('". $body . "','" . date('Y-m-d') . "','" . $newsId . "')";
-		$db->exec($sql);
-		return $db->lastInsertId($sql);
+		$sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES(?,?,?)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$body, date('Y-m-d'), $newsId]);
+		return $db->lastInsertId();
 	}
 
 	public function deleteComment($id)
 	{
 		$db = DB::getInstance();
-		$sql = "DELETE FROM `comment` WHERE `id`=" . $id;
-		return $db->exec($sql);
+		$sql = "DELETE FROM `comment` WHERE `id`=?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->rowCount();
 	}
 }

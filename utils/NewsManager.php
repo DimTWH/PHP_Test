@@ -46,9 +46,10 @@ class NewsManager
 	public function addNews($title, $body)
 	{
 		$db = DB::getInstance();
-		$sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUES('". $title . "','" . $body . "','" . date('Y-m-d') . "')";
-		$db->exec($sql);
-		return $db->lastInsertId($sql);
+		$sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUES(?,?,?)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$title, $body, date('Y-m-d')]);
+		return $db->lastInsertId();
 	}
 
 	/**
@@ -70,7 +71,10 @@ class NewsManager
 		}
 
 		$db = DB::getInstance();
-		$sql = "DELETE FROM `news` WHERE `id`=" . $id;
-		return $db->exec($sql);
+		$sql = "DELETE FROM `news` WHERE `id`=?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->rowCount();
 	}
 }
