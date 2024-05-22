@@ -2,52 +2,68 @@
 
 class Comment
 {
-	protected $id, $body, $createdAt, $newsId;
+    private $id;
+    private $body;
+    private $createdAt;
+    private $newsId;
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    /**
+     * Constructor with optional parameters.
+     *
+     * @param int|null $id
+     * @param string|null $body
+     * @param string|null $createdAt
+     * @param int|null $newsId
+     */
+    public function __construct(?int $id = null,?string $body = null,?string $createdAt = null,?int $newsId = null)
+    {
+        $this->id = $id;
+        $this->body = $body;
+        $this->createdAt = $createdAt;
+        $this->newsId = $newsId;
+    }
 
-		return $this;
-	}
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-	public function getId()
-	{
-		return $this->id;
-	}
-	public function setBody($body)
-	{
-		$this->body = $body;
+    public function getBody(): string
+    {
+        return $this->body;
+    }
 
-		return $this;
-	}
+    public function getCreatedAt(): string
+    {
+        return $this->createdAt;
+    }
 
-	public function getBody()
-	{
-		return $this->body;
-	}
+    public function getNewsId(): int
+    {
+        return $this->newsId;
+    }
 
-	public function setCreatedAt($createdAt)
-	{
-		$this->createdAt = $createdAt;
+    public function setId(int $id): Comment
+    {
+        $this->id = $id;
+        return $this;
+    }
 
-		return $this;
-	}
+    public function setBody(string $body): Comment
+    {
+        $this->body = $body;
+        return $this;
+    }
 
-	public function getCreatedAt()
-	{
-		return $this->createdAt;
-	}
+    public function setCreatedAt(string $createdAt): Comment
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
 
-	public function getNewsId()
-	{
-		return $this->newsId;
-	}
-
-	public function setNewsId($newsId)
-	{
-		$this->newsId = $newsId;
-
-		return $this;
-	}
+    public function setNewsId(int $newsId): Comment
+    {
+        $this->newsId = $newsId;
+        return $this;
+    }
 }
