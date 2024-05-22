@@ -8,11 +8,11 @@ class DB
 
 	private function __construct()
 	{
-		$dsn = 'mysql:dbname=phptest;host=127.0.0.1';
-		$user = 'root';
-		$password = '';
+		$dsn = $_ENV["DB_DRIVER"] . ":dbname=" . $_ENV["DB_NAME"] . ";host=" . $_ENV["DB_HOST"];
+		$user = $_ENV["DB_USERNAME"];
+		$password = $_ENV["DB_PASSWORD"];
 
-		$this->pdo = new \PDO($dsn, $user, $password);
+		$this->pdo = new PDO($dsn, $user, $password);
 	}
 
 	public static function getInstance()
