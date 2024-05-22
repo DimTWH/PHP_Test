@@ -1,4 +1,4 @@
-# PHP test
+# PHP test (updated)
 
 ## 1. Installation
 
@@ -13,3 +13,7 @@ This simple application works, but with very old-style monolithic codebase, so d
 
   - easier to work with
   - more maintainable
+
+## Additions & refactorings
+  - Use SQL prepared statements: protection against possible SQL injections
+  - Use Environment variables: store sentitive data securely in a .env file
