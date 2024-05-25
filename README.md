@@ -15,5 +15,7 @@ This simple application works, but with very old-style monolithic codebase, so d
   - more maintainable
 
 ## Additions & refactorings
-  - Use SQL prepared statements: protection against possible SQL injections
-  - Use Environment variables: store sentitive data securely in a .env file
+  - Use SQL prepared statements for protection against possible SQL injections
+  - Use Environment variables and store sentitive data securely in a .env file
+  - Use exceptions for better error handling
+  - Add documentation / comments in code
