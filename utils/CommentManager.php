@@ -33,7 +33,7 @@ class CommentManager
 
 	/**
      * Lists all comments entries from the database.
-     * This method fetches news records from the database and instantiates Comment objects for each entry.
+     * This method fetches comment records from the database and instantiates Comment objects for each entry.
      *
      * @return array An array of Comment objects representing all comments entries.
      */
