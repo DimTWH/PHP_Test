@@ -35,14 +35,14 @@ class CommentManager
      * Lists all comments entries from the database.
      * This method fetches news records from the database and instantiates Comment objects for each entry.
      *
-     * @return array An array of Comment objects representing all news entries.
+     * @return array An array of Comment objects representing all comments entries.
      */
 	public function listComments()
 	{
 		$db = DB::getInstance();
 		$rows = $db->select('SELECT * FROM `comment`');
-
 		$comments = [];
+		
 		foreach($rows as $row) {
 			$n = new Comment();
 			$comments[] = $n->setId($row['id'])
@@ -50,7 +50,6 @@ class CommentManager
 			  ->setCreatedAt($row['created_at'])
 			  ->setNewsId($row['news_id']);
 		}
-
 		return $comments;
 	}
 
@@ -62,7 +61,7 @@ class CommentManager
      * @param int $newsId The ID of the news entry the comment is associated with.
      * @return int The ID of the newly inserted comment.
      */
-	public function addCommentForNews($body, $newsId)
+	public function addCommentForNews(string $body, int $newsId)
 	{
 		$db = DB::getInstance();
 		$sql = "INSERT INTO `comment` (`body`, `created_at`, `news_id`) VALUES(?,?,?)";
@@ -78,7 +77,7 @@ class CommentManager
      * @param int $id The ID of the comment to delete.
      * @return int The number of rows deleted from the database.
      */
-	public function deleteComment($id)
+	public function deleteComment(int $id)
 	{
 		$db = DB::getInstance();
 		$sql = "DELETE FROM `comment` WHERE `id`=?";

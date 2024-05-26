@@ -63,7 +63,7 @@ class NewsManager
      * @param string $body The content of the news entry.
      * @return int The ID of the newly inserted news entry.
      */
-	public function addNews($title, $body)
+	public function addNews(string $title, string $body)
 	{
 		$db = DB::getInstance();
 		$sql = "INSERT INTO `news` (`title`, `body`, `created_at`) VALUES(?,?,?)";
@@ -79,7 +79,7 @@ class NewsManager
      * @param int $id The ID of the news entry to delete.
      * @return int The number of rows deleted from the database.
      */
-	public function deleteNews($id)
+	public function deleteNews(int $id)
 	{
 		$comments = CommentManager::getInstance()->listComments();
 		$idsToDelete = [];
