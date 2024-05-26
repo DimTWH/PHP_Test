@@ -5,34 +5,73 @@ define('ROOT', __DIR__);
 // Load all dependencies
 require_once(ROOT . '/vendor/autoload.php');
 
-// Get the dotenv dependency
+// Configuration loading
 use Symfony\Component\Dotenv\Dotenv;
 
-// Create an instance of the dotenv class
 $dotenv = new Dotenv();
-// Load the .env file
 $dotenv->load(ROOT . '/.env');
 
 // Load the News & Comment managers
 require_once(ROOT . '/utils/NewsManager.php');
 require_once(ROOT . '/utils/CommentManager.php');
 
-// Loop through all news by creating/getting the instance of the NewsManager and executing the listNews() method
-foreach (NewsManager::getInstance()->listNews() as $news) {
-	// Print the title of the news
-	echo ("############ NEWS " . $news->getTitle() . " ############\n");
-	// Print the body of the news
-	echo ($news->getBody() . "\n");
+/**
+ * Fetch all news entries from the database.
+ * This function retrieves all news records from the database and returns them as an array of News objects.
+ *
+ * @return array An array of News objects representing all news entries.
+ */
+function getAllNews()
+{
+	$newsManager = NewsManager::getInstance();
+	$news = $newsManager->listNews();
+	return $news;
+}
 
-	// Loop through all comments
-	foreach (CommentManager::getInstance()->listComments() as $comment) {
-		// Print the comments for the specific news (current item in the loop)
+/**
+ * Like the function above, fetch all comments from the database.
+ * This function retrieves all comment records from the database and returns them as an array of Comment objects.
+ *
+ * @return array An array of Comment objects representing all comments.
+ */
+function getAllComments()
+{
+	$commentManager = CommentManager::getInstance();
+	$comments = $commentManager->listComments();
+	return $comments;
+}
+
+/**
+ * Displays a news article.
+ * Outputs the title, body, and associated comments of a given news article.
+ *
+ * @param News $news The news article to display.
+ */
+function displayNews(News $news)
+{
+	echo "\n############ NEWS " . $news->getTitle() . " ############\n";
+	echo $news->getBody() . "\n\n";
+
+	// Display comments for the current news item
+	$comments = getAllComments();
+	foreach ($comments as $comment) {
 		if ($comment->getNewsId() == $news->getId()) {
-			echo ("Comment " . $comment->getId() . " : " . $comment->getBody() . "\n");
+			echo "Comment " . $comment->getId() . " : " . $comment->getBody() . "\n";
 		}
 	}
 }
 
-$commentManager = CommentManager::getInstance();
-$c = $commentManager->listComments();
-echo "\n" . "Total Number of comments: " . count($c);
+/**
+ * Main logic
+ * Iterates over all news articles and displays them using the displayNews function.
+ */
+function main()
+{
+	// Get news to display
+	$allNews = getAllNews();
+	foreach ($allNews as $news) {
+		displayNews($news);
+	}
+}
+
+main();
