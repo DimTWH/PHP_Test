@@ -5,8 +5,18 @@ class DB
 	/**
 	 * Initialize properties.
 	 */
-	private $pdo;
+
+	/**
+	 * Instance of the DB class.
+	 * @var DB
+	 */
 	private static $instance = null;
+
+	/**
+	 * PDO instance for database connection.
+	 * @var PDO
+	 */
+	private $pdo;
 
 	/**
 	 * Initializes the database connection.
@@ -31,7 +41,12 @@ class DB
 		}
 	}
 
-	// Get existing instance or create one if none are existent (Singleton)
+	/**
+	 * Retrieves the singleton instance of the DB class.
+	 * If no instance exists, it creates one. Otherwise, it returns the existing instance.
+	 *
+	 * @return DB The singleton instance of the DB class.
+	 */
 	public static function getInstance()
 	{
 		if (null === self::$instance) {
@@ -41,19 +56,57 @@ class DB
 		return self::$instance;
 	}
 
-	// Execute a SELECT query on the Database
+	/**
+     * Prepares an SQL statement for execution.
+     * Returns a PDOStatement object.
+     *
+     * @param string $sql The SQL query to prepare.
+     * @return PDOStatement A PDOStatement object representing the prepared statement.
+     * @throws PDOException If there is an error preparing the statement.
+     */
+    public function prepare($sql)
+    {
+        try {
+            return $this->pdo->prepare($sql);
+        } catch (PDOException $e) {
+            throw new PDOException("Prepare failed: ". $e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+	/**
+	 * Execute a SELECT query and returns the result.
+	 * Uses PDO to prepare and execute the query, returning all fetched rows.
+	 *
+	 * @param string $sql The SQL query to execute.
+	 * @return array An associative array containing the result set.
+	 * @throws PDOException If there is an error executing the query.
+	 */
 	public function select($sql)
 	{
 		$sth = $this->pdo->query($sql);
 		return $sth->fetchAll();
 	}
 
-	// Execute a SQL query
+	/**
+	 * Execute an INSERT, UPDATE, DELETE, or other non-SELECT query.
+	 * Uses PDO to prepare and execute the query, returning the number of affected rows.
+	 *
+	 * @param string $sql The SQL query to execute.
+	 * @return int The number of rows affected by the query.
+	 * @throws PDOException If there is an error executing the query.
+	 */
 	public function exec($sql)
 	{
 		return $this->pdo->exec($sql);
 	}
-	// Return the ID of the last inserted row or sequence value
+
+
+	/**
+	 * Return the ID of the last inserted row or sequence value.
+	 * Useful for auto-incrementing fields.
+	 *
+	 * @return mixed The ID of the last inserted row or sequence value.
+	 */
 	public function lastInsertId()
 	{
 		return $this->pdo->lastInsertId();
